@@ -237,3 +237,7 @@ python3 -m venv .venv && .venv/bin/pip install -e '.[dev]'
 ```
 
 Tests run without network access, using fixtures and simulated search and download.
+
+## License
+
+[MIT](LICENSE). The bundled Allo font keeps its own license, the SIL Open Font License 1.1.
