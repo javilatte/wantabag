@@ -143,6 +143,8 @@ that could not be found are listed at the end under "Not in the bag". When it fi
 download one `.zip` with the MP3 files and the `.m3u` (and the missing report). The audio quality,
 folder name and music videos are under **Options**. It uses the same readers, search, download
 and tagging as the command line, and needs only Python's standard library.
+The page follows your system's light or dark mode; the **Auto / Light / Dark** switch at the
+top right overrides it and is remembered in this browser.
 
 - It listens on `127.0.0.1` and **has no authentication**. If you pass another `--host`
   (for example `0.0.0.0`) the terminal warns you: anyone who can reach that address can use it.

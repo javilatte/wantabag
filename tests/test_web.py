@@ -346,14 +346,32 @@ def test_static_assets_are_local(client):
     assert c.request("HEAD", "/")[0].status == 200
 
     external = re.compile(r"""(?:src|href)\s*=\s*["']https?://|url\(\s*["']?https?://""")
-    for name in ("index.html", "app.css", "app.js"):
+    for name in ("index.html", "app.css", "app.js", "theme.js"):
         text = server.load_static()[f"/{name}"][0].decode()
         assert not external.search(text), name
 
 
+def test_index_serves_theme_switch_and_head_script(client):
+    c, *_ = client
+    html = c.request("GET", "/")[1].decode()
+    head = html.split("</head>", 1)[0]
+    assert '<script src="/theme.js"></script>' in head
+    assert head.index("/theme.js") < head.index("/app.css")
+    values = re.findall(r'<input[^>]*name="theme"[^>]*value="(\w+)"', html)
+    assert values == ["auto", "light", "dark"]
+    assert '<legend class="sr-only">Theme</legend>' in html
+    resp, js = c.request("GET", "/theme.js")
+    assert resp.status == 200 and resp.getheader("Content-Type").startswith("text/javascript")
+    assert b"localStorage" in js and b"removeItem" in js
+    assert "'unsafe-inline'" not in resp.getheader("Content-Security-Policy")
+    css = server.load_static()["/app.css"][0].decode()
+    assert ':root:not([data-theme="light"])' in css and ':root[data-theme="dark"]' in css
+
+
 def test_static_files_are_packaged_under_the_package():
     static = Path(server.__file__).parent / "static"
-    assert {"index.html", "app.css", "app.js", "favicon.svg"} <= {p.name for p in static.iterdir()}
+    expected = {"index.html", "app.css", "app.js", "theme.js", "favicon.svg"}
+    assert expected <= {p.name for p in static.iterdir()}
 
 
 def test_is_loopback():
