@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>wantabag: I want a bag</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#url">Skip to the playlist link</a>
+
+  <header class="top">
+    <p class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 120" width="22" height="26" aria-hidden="true" focusable="false">
+        <path d="M12 36h76v76H12z" fill="none" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/>
+        <path d="M34 36V24a16 16 0 0 1 32 0v12" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+      </svg>
+      wantabag
+    </p>
+    <p class="old"><s>You'll own nothing and be happy.</s></p>
+  </header>
+
+  <main>
+    <h1>I want a&nbsp;bag.</h1>
+    <p class="lede">Paste a public Apple Music or Spotify playlist. Get the songs back as MP3 files you keep, in one zip.</p>
+
+    <form id="form" novalidate>
+      <label for="url">Apple Music or Spotify playlist link</label>
+      <div class="field">
+        <input id="url" name="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false"
+               placeholder="https://music.apple.com/…/playlist/…" aria-describedby="url-note" required>
+        <button id="go" type="submit" class="button">Pack it</button>
+      </div>
+      <p id="url-note" class="note">Only music.apple.com and open.spotify.com links.</p>
+      <p id="form-error" class="error" role="alert" hidden></p>
+
+      <section id="preview" class="preview" aria-label="Playlist preview" hidden>
+        <img id="cover" alt="" width="88" height="88" referrerpolicy="no-referrer" hidden>
+        <div class="preview-text">
+          <h2 id="p-name"></h2>
+          <p id="p-meta" class="meta"></p>
+          <p id="p-warn" class="warn" hidden></p>
+        </div>
+      </section>
+
+      <details id="options" class="options">
+        <summary>Options</summary>
+        <div class="options-body">
+          <fieldset>
+            <legend>Audio quality</legend>
+            <div id="quality" class="choices"></div>
+            <p id="audio-note" class="note"></p>
+          </fieldset>
+
+          <div class="row">
+            <label for="name">Folder name</label>
+            <input id="name" name="name" type="text" maxlength="200" autocomplete="off" placeholder="Same as the playlist">
+          </div>
+
+          <div class="row inline">
+            <input id="videos" name="videos" type="checkbox">
+            <label for="videos">Also get the music videos</label>
+            <label for="video-quality" class="sr-only">Video quality</label>
+            <select id="video-quality" name="video-quality" disabled></select>
+          </div>
+        </div>
+      </details>
+    </form>
+
+    <section id="progress" class="progress" aria-labelledby="progress-title" hidden>
+      <div class="progress-head">
+        <svg id="bag" class="bag" viewBox="0 0 100 120" width="76" height="91" aria-hidden="true" focusable="false">
+          <defs><clipPath id="bag-clip"><path d="M12 36h76v76H12z"/></clipPath></defs>
+          <g clip-path="url(#bag-clip)"><rect id="bag-fill" x="0" y="36" width="100" height="80"/></g>
+          <path d="M12 36h76v76H12z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M34 36V24a16 16 0 0 1 32 0v12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="progress-text">
+          <h2 id="progress-title">Packing</h2>
+          <p id="summary" class="summary" aria-live="polite"></p>
+          <div class="bar-row">
+            <label for="bar" class="sr-only">Songs packed</label>
+            <progress id="bar" max="1" value="0"></progress>
+            <span id="counter" class="num counter"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="done" class="done" hidden>
+        <a id="zip" class="button" href="#" download>Download the bag (.zip)</a>
+        <p id="saved" class="note" hidden></p>
+        <button id="again" type="button" class="button ghost" hidden>Pack another</button>
+      </div>
+
+      <ol id="tracks" class="receipt" aria-label="Songs"></ol>
+
+      <section id="missed-box" class="missed" aria-labelledby="missed-title" hidden>
+        <h3 id="missed-title">Not in the bag</h3>
+        <p class="note">These could not be found or downloaded. Try the playlist again later.</p>
+        <ul id="missed" class="receipt"></ul>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <p>Everything runs on your computer. Set in Allo by Josh Puckett (OFL).</p>
+  </footer>
+</body>
+</html>
